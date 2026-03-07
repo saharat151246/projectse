@@ -29,12 +29,12 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Paid", "Cancelled"],
+      enum: ["Pending", "Paid", "Cancelled", "ตรวจสอบสลิปแล้ว", "จัดส่งแล้ว", "ยกเลิก"],
       default: "Pending",
     },
     paymentMethod: {
       type: String,
-      enum: ["COD", "Transfer", "CreditCard"],
+      enum: ["COD", "Transfer", "CreditCard", "QRCode"],
     },
     paidAt: Date,
     transactionId: String,

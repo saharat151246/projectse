@@ -18,7 +18,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["user", "admin"],
     default: "user"
-  }
+  },
+  phone: { type: String, default: "" },
+  bio: { type: String, default: "" },
+  gender: { type: String, enum: ["", "male", "female", "other"], default: "" },
+  birthday: { type: String, default: "" },
+  addresses: [
+    {
+      label: { type: String, default: "บ้าน" },
+      name: String,
+      phone: String,
+      address: String
+    }
+  ]
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);

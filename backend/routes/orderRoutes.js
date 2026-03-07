@@ -10,6 +10,21 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 
 // ===============================
+// 🔹 Get User Orders
+// ===============================
+router.get("/myorders", authMiddleware, async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id })
+      .populate('items.product', 'name price image')
+      .sort({ createdAt: -1 });
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ===============================
 // 🔹 Create Order (reserve stock)
 // ===============================
 router.post("/", authMiddleware, async (req, res) => {
@@ -146,6 +161,32 @@ router.get("/admin-orders", authMiddleware, adminMiddleware, async (req, res) =>
       .sort({ createdAt: -1 });
 
     res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ===============================
+// 🔹 Admin: Update Order Status
+// ===============================
+router.patch("/:id/status", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const { status } = req.body;
+    const allowedStatuses = ["Pending", "Paid", "ตรวจสอบสลิปแล้ว", "จัดส่งแล้ว", "ยกเลิก"];
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    res.json({ message: "Status updated", order });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

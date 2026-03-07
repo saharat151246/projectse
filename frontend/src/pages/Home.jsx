@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
 import ProductFilter from "../components/ProductFilter"
+import ProductCard from "../components/ProductCard"
 
 function Home({ productSystem, cartSystem, searchTerm }) {
 
@@ -11,9 +11,8 @@ function Home({ productSystem, cartSystem, searchTerm }) {
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("All")
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"
 
-  // load category options on mount
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -28,7 +27,6 @@ function Home({ productSystem, cartSystem, searchTerm }) {
     loadCategories()
   }, [])
 
-  // whenever searchTerm, filters, or selected category change, refetch products
   useEffect(() => {
     const filters = { ...currentFilters }
     if (searchTerm) filters.search = searchTerm
@@ -48,63 +46,54 @@ function Home({ productSystem, cartSystem, searchTerm }) {
   }
 
   return (
+    <div className="home-layout">
 
-    <div>
+      {/* Sidebar */}
+      <ProductFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        handleCategoryClick={handleCategoryClick}
+        updateFilters={updateFilters}
+      />
 
-      <div className="flex">
+      {/* Main Content */}
+      <div className="home-content">
 
-        {/* Sidebar */}
-        <ProductFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          handleCategoryClick={handleCategoryClick}
-          updateFilters={updateFilters}
-        />
-
-        {/* Product List */}
-
-      <div className="flex-1 grid grid-cols-4 gap-6 p-8">
-
-        {products.map((p) => (
-
-          <div
-            key={p._id}
-            className="bg-white border border-gray-200 rounded-2xl p-4 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
-          >
-
-            <Link to={`/product/${p._id || p.id}`} className="block">
-              <div className="relative overflow-hidden rounded-lg">
-                <img
-                  src={`${API_URL}${p.image}`}
-                  alt={p.name}
-                  className="w-full h-48 object-cover rounded-lg hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-              <h3 className="font-bold mt-3 text-gray-800 truncate">
-                {p.name}
-              </h3>
-              <p className="text-xl font-semibold text-green-600 mt-2">
-                ฿{p.price}
-              </p>
-            </Link>
-
-            <button
-              onClick={() => addToCart(p)}
-              className="mt-2 bg-green-600 text-white px-3 py-1 rounded"
-            >
-              Add to cart
-            </button>
-
+        {/* Header row */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+          <div>
+            <h1 style={{ margin: 0, fontSize: "20px", fontWeight: 800, color: "#1e1e2e" }}>🛍️ สินค้าทั้งหมด</h1>
+            <p style={{ margin: "4px 0 0", fontSize: "13px", color: "#9ca3af" }}>
+              {products.length} รายการ
+              {selectedCategory !== "All" && ` · ${selectedCategory}`}
+              {searchTerm && ` · ค้นหา "${searchTerm}"`}
+            </p>
           </div>
+        </div>
 
-        ))}
+        {/* Empty state */}
+        {products.length === 0 && (
+          <div style={{ textAlign: "center", paddingTop: "80px", color: "#9ca3af" }}>
+            <div style={{ fontSize: "56px", marginBottom: "16px" }}>📭</div>
+            <p style={{ fontSize: "18px", fontWeight: 600 }}>ไม่พบสินค้า</p>
+            <p style={{ fontSize: "14px" }}>ลองเปลี่ยนตัวกรองหรือคำค้นหา</p>
+          </div>
+        )}
+
+        {/* Product Grid */}
+        <div className="product-grid">
+          {products.map((p) => (
+            <ProductCard
+              key={p._id}
+              product={p}
+              addToCart={addToCart}
+            />
+          ))}
+        </div>
 
       </div>
 
     </div>
-
-    </div>
-
   )
 
 }

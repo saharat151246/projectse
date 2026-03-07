@@ -20,73 +20,68 @@ function CartDrawer({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-end"
+      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50, display: "flex", justifyContent: "flex-end" }}
       onClick={() => setIsOpen(false)}
     >
-      {/* Drawer */}
+      {/* Drawer Panel */}
       <div
-        className="w-96 bg-white h-full p-8 shadow-2xl flex flex-col rounded-l-3xl"
+        style={{ width: "380px", background: "white", height: "100%", padding: "0", boxShadow: "-4px 0 30px rgba(51,55,169,0.15)", display: "flex", flexDirection: "column", borderRadius: "20px 0 0 20px" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex justify-between items-center mb-6 border-b-2 pb-4">
-          <h2 className="text-2xl font-bold text-gray-800">🛒 ตะกร้า</h2>
+        <div style={{ background: "#3337A9", padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "20px 0 0 0" }}>
+          <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 700, color: "white" }}>🛒 ตะกร้าสินค้า</h2>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-3xl font-bold text-gray-600 hover:text-red-600 transition"
+            style={{ background: "rgba(255,255,255,0.15)", border: "none", color: "white", fontSize: "18px", width: "34px", height: "34px", borderRadius: "50%", cursor: "pointer", fontWeight: 700 }}
           >
             ✕
           </button>
         </div>
 
         {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto pr-2">
+        <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px" }}>
           {cart.length === 0 && (
-            <p className="text-gray-500 text-center mt-10">
-              ไม่มีสินค้าในตะกร้า
-            </p>
+            <div style={{ textAlign: "center", paddingTop: "60px", color: "#9ca3af" }}>
+              <div style={{ fontSize: "48px", marginBottom: "12px" }}>🛒</div>
+              <p>ไม่มีสินค้าในตะกร้า</p>
+            </div>
           )}
 
           {cart.map((item) => (
             <div
               key={item.id}
-              className="border-b pb-4 mb-4"
+              style={{ borderBottom: "1px solid #f0f1ff", paddingBottom: "16px", marginBottom: "16px" }}
             >
-              <div className="flex justify-between items-start">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {item.price} ฿
-                  </p>
+                  <p style={{ margin: "0 0 4px", fontWeight: 600, color: "#1e1e2e" }}>{item.name}</p>
+                  <p style={{ margin: 0, fontSize: "13px", color: "#6b7280" }}>{item.price} ฿</p>
                 </div>
-
                 <button
                   onClick={() => removeFromCart(item.id)}
-                  className="text-red-500 text-sm hover:underline"
+                  style={{ background: "#fef2f2", border: "none", color: "#ef4444", fontSize: "12px", fontWeight: 600, padding: "4px 10px", borderRadius: "6px", cursor: "pointer" }}
                 >
                   ลบ
                 </button>
               </div>
 
               {/* Quantity Control */}
-              <div className="flex items-center gap-3 mt-3">
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "10px" }}>
                 <button
                   onClick={() => decreaseQty(item.id)}
-                  className="w-8 h-8 bg-gray-200 rounded hover:bg-gray-300"
+                  style={{ width: "30px", height: "30px", background: "#eef0ff", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "16px", cursor: "pointer", color: "#3337A9" }}
                 >
-                  -
+                  −
                 </button>
-
-                <span>{item.quantity}</span>
-
+                <span style={{ fontWeight: 700, minWidth: "20px", textAlign: "center" }}>{item.quantity}</span>
                 <button
                   onClick={() => increaseQty(item.id)}
-                  className="w-8 h-8 bg-gray-200 rounded hover:bg-gray-300"
+                  style={{ width: "30px", height: "30px", background: "#3337A9", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "16px", cursor: "pointer", color: "white" }}
                 >
                   +
                 </button>
-
-                <span className="ml-auto font-semibold">
+                <span style={{ marginLeft: "auto", fontWeight: 700, color: "#3337A9" }}>
                   {item.price * item.quantity} ฿
                 </span>
               </div>
@@ -95,22 +90,29 @@ function CartDrawer({
         </div>
 
         {/* Footer */}
-        <div className="border-t pt-4 mt-4">
-          <div className="flex justify-between text-lg font-bold mb-4">
+        <div style={{ padding: "20px 24px", borderTop: "2px solid #eef0ff" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: "18px", marginBottom: "16px", color: "#1e1e2e" }}>
             <span>รวมทั้งหมด</span>
-            <span>{totalPrice} ฿</span>
+            <span style={{ color: "#3337A9" }}>฿{totalPrice}</span>
           </div>
 
           <button
             disabled={cart.length === 0}
             onClick={handleCheckout}
-            className={`w-full py-3 rounded-lg text-white transition ${
-              cart.length === 0
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700"
-            }`}
+            style={{
+              width: "100%",
+              padding: "14px",
+              borderRadius: "12px",
+              border: "none",
+              fontWeight: 700,
+              fontSize: "15px",
+              cursor: cart.length === 0 ? "not-allowed" : "pointer",
+              background: cart.length === 0 ? "#d1d5db" : "#3337A9",
+              color: "white",
+              boxShadow: cart.length === 0 ? "none" : "0 4px 14px rgba(51,55,169,0.35)"
+            }}
           >
-            ไปชำระเงิน
+            {cart.length === 0 ? "ตะกร้าว่าง" : "✅ ไปชำระเงิน"}
           </button>
         </div>
       </div>

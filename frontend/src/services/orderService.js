@@ -68,6 +68,32 @@ const orderService = {
     } catch (error) {
       throw error.response?.data || error.message;
     }
+  },
+
+  // User: Get my orders
+  getUserOrders: async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API_BASE_URL}/myorders`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Admin: Update order status
+  updateOrderStatus: async (orderId, status) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.patch(`${API_BASE_URL}/${orderId}/status`, { status }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
   }
 };
 

@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -71,7 +72,7 @@ router.post("/login", async (req, res) => {
         role: user.role
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "7d" }
     );
 
     res.json({
@@ -130,5 +131,79 @@ router.post("/create-admin", async (req, res) => {
   }
 });
 
+
+// ======================
+// 🔹 Get My Profile
+// ======================
+router.get("/profile", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ======================
+// 🔹 Update My Profile
+// ======================
+router.put("/profile", authMiddleware, async (req, res) => {
+  try {
+    const { name, phone, bio, gender, birthday } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { name, phone, bio, gender, birthday },
+      { new: true, runValidators: true }
+    ).select("-password");
+    res.json({ message: "Profile updated", user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ======================
+// 🔹 Get Saved Addresses
+// ======================
+router.get("/addresses", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("addresses");
+    res.json(user.addresses || []);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ======================
+// 🔹 Add a Saved Address
+// ======================
+router.post("/addresses", authMiddleware, async (req, res) => {
+  try {
+    const { label, name, phone, address } = req.body;
+    if (!name || !phone || !address) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+    const user = await User.findById(req.user._id);
+    user.addresses.push({ label: label || "บ้าน", name, phone, address });
+    await user.save();
+    res.status(201).json({ message: "Address added", addresses: user.addresses });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ======================
+// 🔹 Delete a Saved Address
+// ======================
+router.delete("/addresses/:addressId", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    user.addresses = user.addresses.filter(a => a._id.toString() !== req.params.addressId);
+    await user.save();
+    res.json({ message: "Address deleted", addresses: user.addresses });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

@@ -2,39 +2,30 @@ import { useState } from "react"
 
 function ProductFilter({ categories, selectedCategory, handleCategoryClick, updateFilters }) {
 
-
   const [minPrice, setMinPrice] = useState("")
   const [maxPrice, setMaxPrice] = useState("")
 
   const applyFilter = () => {
-
-    updateFilters({
-      category: selectedCategory,
-      minPrice,
-      maxPrice
-    })
-
+    updateFilters({ category: selectedCategory, minPrice, maxPrice })
   }
 
   return (
+    <div className="home-sidebar">
 
-    <div className="w-64 p-6 border-r border-gray-200 bg-gray-50 shadow-sm">
-
-      <h2 className="font-bold mb-4 text-lg text-gray-800">
+      <h2 style={{ fontWeight: 700, marginBottom: "16px", fontSize: "15px", color: "#3337A9", whiteSpace: "nowrap" }}>
         📂 หมวดหมู่
       </h2>
 
-      {/* Category dropdown */}
       <select
         value={selectedCategory}
         onChange={(e) => handleCategoryClick(e.target.value)}
-        className="w-full border border-gray-300 p-3 mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+        style={{ width: "100%", border: "1.5px solid #c7caef", padding: "9px 12px", marginBottom: "16px", borderRadius: "10px", outline: "none", fontSize: "14px", background: "white", color: "#1e1e2e", cursor: "pointer" }}
       >
         {categories.length === 0 ? (
-          <option disabled>Loading categories...</option>
+          <option disabled>กำลังโหลด...</option>
         ) : (
           <>
-            <option value="All">All</option>
+            <option value="All">ทั้งหมด</option>
             {categories.map(cat => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
@@ -42,37 +33,31 @@ function ProductFilter({ categories, selectedCategory, handleCategoryClick, upda
         )}
       </select>
 
-
-      {/* Price Filter */}
-      <h3 className="font-semibold mt-6 mb-3 text-gray-800">💰 ราคา</h3>
+      <h3 style={{ fontWeight: 700, marginBottom: "10px", fontSize: "13px", color: "#3337A9", whiteSpace: "nowrap" }}>
+        💰 กรองราคา
+      </h3>
 
       <input
         placeholder="ราคาต่ำสุด"
         type="number"
         value={minPrice}
         onChange={(e) => setMinPrice(e.target.value)}
-        className="w-full border border-gray-300 p-2 mb-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+        style={{ width: "100%", border: "1.5px solid #c7caef", padding: "8px 12px", marginBottom: "8px", borderRadius: "10px", outline: "none", fontSize: "14px", boxSizing: "border-box" }}
       />
-
       <input
         placeholder="ราคาสูงสุด"
         type="number"
         value={maxPrice}
         onChange={(e) => setMaxPrice(e.target.value)}
-        className="w-full border border-gray-300 p-2 mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+        style={{ width: "100%", border: "1.5px solid #c7caef", padding: "8px 12px", marginBottom: "12px", borderRadius: "10px", outline: "none", fontSize: "14px", boxSizing: "border-box" }}
       />
-
       <button
         onClick={applyFilter}
-        className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-3 rounded-lg font-semibold hover:from-green-700 hover:to-green-800 transition shadow-md"
-      >
-        ✓ เลือก
-      </button>
+        style={{ width: "100%", background: "#3337A9", color: "white", border: "none", padding: "10px", borderRadius: "10px", fontWeight: 700, fontSize: "14px", cursor: "pointer" }}
+      >✓ กรอง</button>
 
     </div>
-
   )
-
 }
 
 export default ProductFilter

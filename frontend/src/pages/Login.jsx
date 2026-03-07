@@ -54,48 +54,60 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#EEF0FF" }}>
 
       <form
         onSubmit={handleLogin}
-        className="bg-white p-8 rounded-xl shadow w-96"
+        style={{ background: "white", padding: "40px", borderRadius: "16px", boxShadow: "0 8px 32px rgba(51,55,169,0.12)", width: "380px", border: "1px solid rgba(51,55,169,0.1)" }}
       >
 
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Login
-        </h2>
+        <div style={{ textAlign: "center", marginBottom: "28px" }}>
+          <div style={{ fontSize: "40px", marginBottom: "8px" }}>🔐</div>
+          <h2 style={{ margin: 0, fontSize: "24px", fontWeight: 700, color: "#1e1e2e" }}>เข้าสู่ระบบ</h2>
+          <p style={{ margin: "6px 0 0", color: "#6b7280", fontSize: "14px" }}>ยินดีต้อนรับกลับมา</p>
+        </div>
 
         {error && (
-          <p className="text-red-500 mb-4 text-sm">
-            {error}
-          </p>
+          <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "8px", padding: "10px 14px", color: "#dc2626", fontSize: "14px", marginBottom: "16px" }}>
+            ⚠️ {error}
+          </div>
         )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border p-2 rounded mb-4"
-          required
-        />
+        <div style={{ marginBottom: "14px" }}>
+          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#374151", marginBottom: "6px" }}>อีเมล</label>
+          <input
+            type="email"
+            placeholder="example@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ width: "100%", border: "1.5px solid #e5e7eb", borderRadius: "10px", padding: "10px 14px", fontSize: "14px", outline: "none", boxSizing: "border-box" }}
+            required
+          />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded mb-6"
-          required
-        />
+        <div style={{ marginBottom: "24px" }}>
+          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#374151", marginBottom: "6px" }}>รหัสผ่าน</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ width: "100%", border: "1.5px solid #e5e7eb", borderRadius: "10px", padding: "10px 14px", fontSize: "14px", outline: "none", boxSizing: "border-box" }}
+            required
+          />
+        </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+          style={{ width: "100%", background: loading ? "#9196d4" : "#3337A9", color: "white", border: "none", borderRadius: "10px", padding: "12px", fontSize: "15px", fontWeight: 700, cursor: loading ? "not-allowed" : "pointer", boxShadow: "0 4px 14px rgba(51,55,169,0.35)", transition: "all 0.2s" }}
         >
-          {loading ? "Logging in..." : "Login"}
+          {loading ? "⏳ กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
         </button>
+
+        <p style={{ textAlign: "center", marginTop: "20px", fontSize: "14px", color: "#6b7280" }}>
+          ยังไม่มีบัญชี? <a href="/register" style={{ color: "#3337A9", fontWeight: 600, textDecoration: "none" }}>สมัครสมาชิก</a>
+        </p>
 
       </form>
 

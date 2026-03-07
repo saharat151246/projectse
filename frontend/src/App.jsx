@@ -14,6 +14,8 @@ import Checkout from "./pages/Checkout"
 import Register from "./pages/Register"
 import Login from "./pages/Login"
 import Admin from "./pages/Admin"
+import UserOrders from "./pages/UserOrders"
+import UserProfile from "./pages/UserProfile"
 
 import useCart from "./hooks/useCart"
 import useAuth from "./hooks/useAuth"
@@ -62,6 +64,24 @@ function App() {
           <Route
             path="/product/:id"
             element={<ProductDetail cartSystem={cartSystem} />}
+          />
+
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute user={auth.user}>
+                <UserOrders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute user={auth.user}>
+                <UserProfile />
+              </ProtectedRoute>
+            }
           />
 
           <Route
