@@ -59,7 +59,7 @@ export default function ProductDetail({ cartSystem }) {
         {/* Product Image */}
         <div style={{ flex: "0 0 420px" }}>
           <img
-            src={`${API_URL}${product.image}`}
+            src={product.image?.startsWith('http') ? product.image : `${API_URL}${product.image}`}
             alt={product.name}
             style={{ width: "100%", borderRadius: "20px", objectFit: "cover", boxShadow: "0 8px 32px rgba(51,55,169,0.15)" }}
           />

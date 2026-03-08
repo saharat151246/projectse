@@ -648,7 +648,7 @@ export default function Admin() {
                         {products.filter(p => p.stock < 5).map(p => (
                           <tr key={p._id}>
                             <td style={styles.td}>
-                              <img src={`${API_URL}${p.image}`} alt={p.name} style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "6px" }} />
+                              <img src={p.image?.startsWith('http') ? p.image : `${API_URL}${p.image}`} alt={p.name} style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "6px" }} />
                             </td>
                             <td style={styles.td}><strong>{p.name}</strong></td>
                             <td style={{ ...styles.td, color: "#dc2626", fontWeight: 700 }}>{p.stock}</td>
@@ -730,7 +730,7 @@ export default function Admin() {
                     </div>
                   ) : (
                     <>
-                      <img src={`${API_URL}${p.image}`} alt={p.name} style={styles.productImg} />
+                      <img src={p.image?.startsWith('http') ? p.image : `${API_URL}${p.image}`} alt={p.name} style={styles.productImg} />
                       <div style={styles.productInfo}>
                         <h3 style={styles.productName}>{p.name}</h3>
                         <p style={styles.productMeta}>💰 {p.price} บาท</p>

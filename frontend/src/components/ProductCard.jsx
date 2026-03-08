@@ -33,7 +33,7 @@ function ProductCard({ product, addToCart }) {
       {/* Image */}
       <Link to={`/product/${p._id || p.id}`} style={{ display: "block", overflow: "hidden" }}>
         <img
-          src={`${API_URL}${p.image}`}
+          src={p.image?.startsWith('http') ? p.image : `${API_URL}${p.image}`}
           alt={p.name}
           style={{ width: "100%", height: "180px", objectFit: "cover", display: "block", transition: "transform 0.3s ease" }}
           onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"}
