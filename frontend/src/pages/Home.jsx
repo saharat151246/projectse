@@ -79,11 +79,6 @@ function Home({ productSystem, cartSystem, searchTerm }) {
             <p style={{ fontSize: "14px" }}>ลองเปลี่ยนตัวกรองหรือคำค้นหา</p>
           </div>
         )}
-        {/* The following img tag is inserted as per user instruction.
-            Note: 'product' and 'styles' are not defined in this scope,
-            which will lead to a runtime error if this code is executed as is.
-            This change is made faithfully as requested. */}
-        <img src={product.image?.startsWith('http') ? product.image : `${API_URL}${product.image}`} alt={product.name} style={styles.productImage} />
 
         {/* Product Grid */}
         <div className="product-grid">
