@@ -812,7 +812,7 @@ export default function Admin() {
                     {order.items.map((item, index) => (
                       <div key={index} style={styles.orderItem}>
                         <img
-                          src={`${API_URL}${item.product?.image}`}
+                          src={item.product?.image?.startsWith('http') ? item.product.image : `${API_URL}${item.product?.image}`}
                           alt={item.product?.name}
                           style={styles.orderItemImg}
                         />
