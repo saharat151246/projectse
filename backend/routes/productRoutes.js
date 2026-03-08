@@ -1,20 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Product = require("../models/Product")
-const multer = require("multer")
-const path = require("path")
-
-// Upload config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/")
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
-})
-
-const upload = multer({ storage })
+const upload = require("../middleware/uploadMiddleware")
 
 
 // GET PRODUCTS + FILTER
@@ -89,7 +76,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       price,
       category,
       stock,
-      image: req.file ? `/uploads/${req.file.filename}` : ""
+      image: req.file ? req.file.path : ""
     })
 
     await product.save()
@@ -131,7 +118,7 @@ router.put("/:id", async (req, res) => {
 router.post("/:id/image", upload.single("image"), async (req, res) => {
   try {
 
-    const updateData = { image: `/uploads/${req.file.filename}` }
+    const updateData = { image: req.file.path }
 
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true })
 
